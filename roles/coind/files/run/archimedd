@@ -1,0 +1,2 @@
+#!/bin/sh
+exec chpst -u archimedd:archimedd /opt/archimedcoin/archimedcoin/src/archimedd -datadir=/opt/archimedcoin/.archimedcoin -conf=/opt/archimedcoin/archimedcoin.conf -daemon=0 >> /var/log/archimedd.log 2>> /var/log/archimedd.err

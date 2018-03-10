@@ -1,0 +1,30 @@
+- hosts: bitcoind
+  vars:
+    coin_git: https://github.com/bitcoin/bitcoin.git
+    coin_name: bitcoin
+    coind_name: bitcoind
+  vars_files:
+    - secrets/coin/vars.yml
+  roles:
+    - coind
+- hosts: litecoind
+  vars:
+    coin_git: https://github.com/litecoin-project/litecoin.git
+    coin_version: v0.10.2.2
+    coin_name: litecoin
+    coind_name: litecoind
+  vars_files:
+    - secrets/coin/vars.yml
+  roles:
+    - coind
+- hosts: archimedcoind
+  vars:
+    coin_git: https://github.com/ArchimedDev/ArchimedCoin.git
+    coin_version: 1.1.0.1
+    coin_name: archimedcoin
+    coind_name: archimedd
+    coin_port: 10002
+  vars_files:
+    - secrets/coin/vars.yml
+  roles:
+    - coind

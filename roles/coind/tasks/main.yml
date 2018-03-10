@@ -1,0 +1,33 @@
+# create user
+- group: name={{coind_name}} state=present system=yes
+- user: name={{coind_name}} createhome=no group={{coind_name}} state=present system=yes
+- file: path=/opt/{{coin_name}} state=directory owner=root group={{coind_name}} mode=750
+
+# clone
+- git: repo={{coin_git}}
+       dest=/opt/{{coin_name}}/{{coin_name}}
+       version={{coin_version}}
+- file: path=/opt/{{coin_name}}/{{coin_name}} recurse=yes owner=root group={{coind_name}}
+
+# compile
+- copy: src=build/{{coind_name}}.sh dest=/opt/{{coin_name}}/build_{{coind_name}}.sh mode=755 owner=root group={{coind_name}}
+
+- shell: /opt/{{coin_name}}/build_{{coind_name}}.sh
+  args:
+    creates: /opt/{{coin_name}}/{{coin_name}}/src/{{coind_name}}
+# force rebuild (TODO; is there a better way to make this possible?)
+- shell: /opt/{{coin_name}}/build_{{coind_name}}.sh
+  when: rebuild_coins is defined and rebuild_coins == 'true'
+  tags:
+    - rebuild_coins
+
+# install
+- file: path=/etc/sv/{{coind_name}} state=directory
+- copy: src=run/{{coind_name}} dest=/etc/sv/{{coind_name}}/run mode=755 owner=root group=root
+  notify:
+  - restart {{coind_name}}
+- file: src=/etc/sv/{{coind_name}} dest=/etc/service/{{coind_name}} state=link
+
+# config
+- file: path=/opt/{{coin_name}}/.{{coin_name}} state=directory owner=root group={{coind_name}} mode=770
+- template: src={{coin_name}}.conf dest=/opt/{{coin_name}}/{{coin_name}}.conf mode=640 owner=root group={{coind_name}}
