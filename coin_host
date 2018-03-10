@@ -1,5 +1,5 @@
 [archimedcoind]
-localhost
+digiex
 
 [production:children]
 archimedcoind

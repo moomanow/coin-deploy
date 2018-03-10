@@ -2,5 +2,5 @@ cd /opt/archimedcoin/archimedcoin
 git reset --hard
 git clean -f
 ./autogen.sh
-./configure
+./configure --with-incompatible-bdb --disable-hardening
 make

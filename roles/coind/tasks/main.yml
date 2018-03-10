@@ -1,3 +1,15 @@
+- apt: name={{ item }}
+  with_items:
+    - build-essential
+    - libboost-all-dev
+    - libssl-dev
+    - libdb-dev
+    - libdb++-dev
+    - libglib2.0-dev
+    - git
+    - autoconf
+    - libtool
+
 # create user
 - group: name={{coind_name}} state=present system=yes
 - user: name={{coind_name}} createhome=no group={{coind_name}} state=present system=yes
